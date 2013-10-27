@@ -28,7 +28,6 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="81"/>
         </Grid.RowDefinitions>
 
         <Grid.Background>
@@ -99,11 +98,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
-            
         </controls:Panorama>
-        <Grid Grid.Row="1">
-            <UI:AdControl ApplicationId="5723402a-c236-4601-8b72-a197a51f3495" AdUnitId="146895" HorizontalAlignment="Left" Height="80" Margin="0,0,0,0" VerticalAlignment="Top" Width="480"/>
-        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>
