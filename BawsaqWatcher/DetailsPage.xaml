@@ -19,13 +19,11 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait" 
     shell:SystemTray.IsVisible="False">
-    
-    
-    
+
     <Grid x:Name="LayoutRoot">
-    	<Grid.Background>
-    		<ImageBrush Stretch="Fill" ImageSource="/background_bawsaq.png"/>
-    	</Grid.Background>
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/background_bawsaq.png"/>
+        </Grid.Background>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
@@ -110,22 +108,60 @@
         </Grid>
         <Grid x:Name="ContentPanel" Grid.Row="3">
             
+            
+            
             <charting:Chart
                 x:Name="myChart"            
-                Margin="0,0,-137,0"
+                Margin="0,0,0,0"
                 >
+                <charting:Chart.LegendStyle>
+                    <Style TargetType="Control">
+                        <Setter Property="Width" Value="0"/>
+                        <Setter Property="Height" Value="0"/>
+                    </Style>
+                </charting:Chart.LegendStyle>
 
                 <!-- Series -->
                 <charting:Chart.Series>
-                      <charting:LineSeries 
-                          AnimationSequence="FirstToLast"
-                          Foreground="White" 
-                          BorderBrush="Black" 
-                          ItemsSource="{Binding Activities}"
-                          DependentValuePath="Value"
-                          IndependentValuePath="Day">
+                    
+                    <charting:LineSeries 
+                        AnimationSequence="FirstToLast"
+                        Foreground="White" 
+                        BorderBrush="Black" 
+                        ItemsSource="{Binding Activities}"
+                        DependentValuePath="Value"
+                        IndependentValuePath="Day">
+
+                        <charting:LineSeries.DataPointStyle>
+                            <Style TargetType="charting:LineDataPoint">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Background" Value="Green"/>
+                            </Style>
+                        </charting:LineSeries.DataPointStyle>
+                        <charting:LineSeries.DependentRangeAxis>
+                            <charting:LinearAxis Orientation="Y"
+                                  ShowGridLines="True">
+                                <charting:LinearAxis.AxisLabelStyle>
+                                    <Style TargetType="charting:AxisLabel">
+                                        <Setter Property="IsTabStop" Value="False" />
+                                        <Setter Property="StringFormat" Value="{}{0:0.00}" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="charting:AxisLabel">
+                                                    <TextBlock Text="{TemplateBinding FormattedContent}" />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </charting:LinearAxis.AxisLabelStyle>
+                            </charting:LinearAxis>
+                        </charting:LineSeries.DependentRangeAxis>
+                        
+                          
+
                     </charting:LineSeries>
                     
+
                 </charting:Chart.Series>
 
             </charting:Chart>
