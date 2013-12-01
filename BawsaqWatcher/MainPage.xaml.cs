@@ -12,6 +12,10 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Newtonsoft.Json;
 
+using System.Text;
+using System.IO;
+using System.IO.IsolatedStorage;
+
 namespace BawsaqWatcher
 {
     public partial class MainPage : PhoneApplicationPage
@@ -24,6 +28,7 @@ namespace BawsaqWatcher
             InitializeComponent();
             StockRepository.getInstance();
 
+            loadOfflineStocks();
             loadStocks();
            
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
@@ -74,6 +79,7 @@ namespace BawsaqWatcher
             try
             {
                 string jsonInput = e.Result;
+                saveOnFile(jsonInput, "ps3.json");
                 var rootObject = JsonConvert.DeserializeObject<RootObject>(jsonInput);
                 var stocks = rootObject.Stocks;
 
@@ -96,6 +102,7 @@ namespace BawsaqWatcher
             try
             {
                 string jsonInput = e.Result;
+                saveOnFile(jsonInput, "xbox.json");
                 var rootObject = JsonConvert.DeserializeObject<RootObject>(jsonInput);
                 var stocks = rootObject.Stocks;
 
@@ -111,8 +118,44 @@ namespace BawsaqWatcher
                     error = true;
                 }
             }
-            
-            
+        }
+
+        public void loadOfflineStocks()
+        {
+            var rootObject = JsonConvert.DeserializeObject<RootObject>(readFromFile("ps3.json"));
+            var stocks = rootObject.Stocks;
+            StockRepository.getInstance().setStocksPs3(stocks);
+            ps3Stocks.ItemsSource = StockRepository.getInstance().StocksPs3;
+
+            rootObject = JsonConvert.DeserializeObject<RootObject>(readFromFile("xbox.json"));
+            stocks = rootObject.Stocks;
+            StockRepository.getInstance().setStocksXbox(stocks);
+            ps3Stocks.ItemsSource = StockRepository.getInstance().StocksXbox;
+        }
+
+        public void saveOnFile(string data, string filename)
+        {
+            IsolatedStorageFile myFile = IsolatedStorageFile.GetUserStoreForApplication();
+            StreamWriter sw = new StreamWriter(new IsolatedStorageFileStream(filename, FileMode.Create, myFile));
+            sw.WriteLine(data); //Wrting to the file
+            sw.Close();
+
+        }
+
+        public string readFromFile(string filename)
+        {
+            IsolatedStorageFile myFile = IsolatedStorageFile.GetUserStoreForApplication();
+            try
+            {
+
+                StreamReader reader = new StreamReader(new IsolatedStorageFileStream(filename, FileMode.Open, myFile));
+                string rawData = reader.ReadToEnd();
+                reader.Close();
+                return rawData;
+            }
+            catch { }
+
+            return "";
         }
 
         // Load data for the ViewModel Items
