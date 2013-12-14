@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
+using System.IO.IsolatedStorage;
+
 namespace BawsaqWatcher
 {
     public partial class App : Application
@@ -80,6 +82,19 @@ namespace BawsaqWatcher
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            IsolatedStorageSettings.ApplicationSettings["askforreview"] = false;
+
+            int started = 0;
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("started"))
+            {
+                started = (int)IsolatedStorageSettings.ApplicationSettings["started"];
+            }
+            started++;
+            IsolatedStorageSettings.ApplicationSettings["started"] = started;
+            if (started == 5)
+            {
+                IsolatedStorageSettings.ApplicationSettings["askforreview"] = true;
+            } 
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -139,7 +154,7 @@ namespace BawsaqWatcher
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            RootFrame = new PhoneApplicationFrame();
+            RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures

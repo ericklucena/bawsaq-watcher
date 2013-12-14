@@ -15,6 +15,8 @@ using Newtonsoft.Json;
 using System.Text;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Windows.Navigation;
+using Microsoft.Phone.Tasks;
 
 namespace BawsaqWatcher
 {
@@ -28,7 +30,6 @@ namespace BawsaqWatcher
             InitializeComponent();
             StockRepository.getInstance();
 
-            loadOfflineStocks();
             loadStocks();
            
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
@@ -91,8 +92,20 @@ namespace BawsaqWatcher
             {
                 if (!error)
                 {
-                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then reopen the app.", "WASTED!", MessageBoxButton.OK);
+                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then hit the reload button.", "WASTED!", MessageBoxButton.OK);
                     error = true;
+
+                    try
+                    {
+                        loadOfflineStocks();
+                        MessageBox.Show("You are viewing the last loaded version of the stocks. Check your internet connection and then hit the reload button.");
+                    }
+                    catch (Exception ex2)
+                    {
+                        MessageBox.Show("There's no cached information of the BAWSAQ stocks. Please, check your internet connection and then hit the reload button.", "BUSTED!", MessageBoxButton.OK);
+                    }
+
+                    
                 }
             }
         }
@@ -114,8 +127,18 @@ namespace BawsaqWatcher
             {
                 if (!error)
                 {
-                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then reopen the app.", "WASTED!", MessageBoxButton.OK);
+                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then hit the reload button.", "WASTED!", MessageBoxButton.OK);
                     error = true;
+
+                    try
+                    {
+                        loadOfflineStocks();
+                        MessageBox.Show("You are viewing the last loaded version of the stocks. Check your internet connection and then hit the reload button.");
+                    }
+                    catch (Exception ex2)
+                    {
+                        MessageBox.Show("There's no cached information of the BAWSAQ stocks. Please, check your internet connection and then hit the reload button.", "BUSTED!", MessageBoxButton.OK);
+                    }
                 }
             }
         }
@@ -130,7 +153,7 @@ namespace BawsaqWatcher
             rootObject = JsonConvert.DeserializeObject<RootObject>(readFromFile("xbox.json"));
             stocks = rootObject.Stocks;
             StockRepository.getInstance().setStocksXbox(stocks);
-            ps3Stocks.ItemsSource = StockRepository.getInstance().StocksXbox;
+            xboxStocks.ItemsSource = StockRepository.getInstance().StocksXbox;
         }
 
         public void saveOnFile(string data, string filename)
@@ -166,5 +189,30 @@ namespace BawsaqWatcher
                 App.ViewModel.LoadData();
             }
         }
+
+        private void Reload_Click(object sender, EventArgs e)
+        {
+            error = false;
+            loadStocks();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            var askforReview = (bool)IsolatedStorageSettings.ApplicationSettings["askforreview"];
+            if (askforReview)
+            {
+                //make sure we only ask once! 
+                IsolatedStorageSettings.ApplicationSettings["askforreview"] = false;
+                var returnvalue = MessageBox.Show("Thank you for using BAWSAQ Watcher for a while now, would you like to review this app?", "Please review my app", MessageBoxButton.OKCancel);
+                if (returnvalue == MessageBoxResult.OK)
+                {
+                    var marketplaceReviewTask = new MarketplaceReviewTask();
+                    marketplaceReviewTask.Show();
+                }
+            }
+        }
+
     }
 }
