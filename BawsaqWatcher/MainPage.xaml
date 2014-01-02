@@ -124,7 +124,7 @@
         </controls:Panorama>
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="10">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="1">
             <shell:ApplicationBarIconButton x:Name="Reload" Click="Reload_Click" IconUri="/Icons/reload.png" Text="Reload"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
