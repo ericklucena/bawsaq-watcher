@@ -2,8 +2,31 @@
     x:Class="BawsaqWatcher.MainPage"
     d:DesignWidth="480" d:DesignHeight="768" 
     d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False" mc:Ignorable="d">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:SlideTransition  Mode="SlideDownFadeIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:SlideTransition Mode="SlideRightFadeIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:SlideTransition Mode="SlideLeftFadeOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:SlideTransition Mode="SlideUpFadeOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <phone:PhoneApplicationPage.Resources>
@@ -28,7 +51,6 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="81"/>
         </Grid.RowDefinitions>
 
         <Grid.Background>
@@ -37,7 +59,7 @@
         <!--Pivot Control-->
         <controls:Panorama FontSize="10" Grid.Row="0">
             <controls:Panorama.Title>
-                <Grid Margin="0, 90, 0, 0">
+                <Grid Margin="0, 50, 0, 0">
                     <Image Source="/baws_logo.png" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Left" Width="400" Height="80" />
                 </Grid>
 
@@ -45,10 +67,10 @@
             <!--Pivot item one-->
             <controls:PanoramaItem Header="PS3" Foreground="White">
                 <!--Double line list with text wrapping-->
-                <ListBox x:Name="ps3Stocks" Margin="0,0,0,0" ItemsSource="{Binding Items}" SelectionChanged="ps3Stocks_SelectionChanged">
+                <ListBox x:Name="ps3Stocks" Margin="0,-25,0,0" ItemsSource="{Binding Items}" SelectionChanged="ps3Stocks_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Grid x:Name="StockInformation" Grid.Row="2" Grid.Column="0" Background="#DD000000"  Width="400" HorizontalAlignment="Center" Margin="0,0,0,10">
+                            <Grid x:Name="StockInformation"  Grid.Column="0" Background="#DD000000"  Width="400" HorizontalAlignment="Center" Margin="0,0,0,10">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="0.6*" />
@@ -74,7 +96,7 @@
             <!--Pivot item two-->
             <controls:PanoramaItem Header="XBOX" Foreground="White">
                 <!--Triple line list no text wrapping-->
-                <ListBox x:Name="xboxStocks" Margin="0,0,0,0" ItemsSource="{Binding Items}" SelectionChanged="xboxStocks_SelectionChanged">
+                <ListBox x:Name="xboxStocks" Margin="0,-25,0,0" ItemsSource="{Binding Items}" SelectionChanged="xboxStocks_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="StockInformation" Grid.Row="2" Grid.Column="0" Background="#DD000000"  Width="400" HorizontalAlignment="Center" Margin="0,0,0,10">
@@ -99,11 +121,12 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PanoramaItem>
-            
         </controls:Panorama>
-        <Grid Grid.Row="1">
-            <UI:AdControl ApplicationId="5723402a-c236-4601-8b72-a197a51f3495" AdUnitId="146895" HorizontalAlignment="Left" Height="80" Margin="0,0,0,0" VerticalAlignment="Top" Width="480"/>
-        </Grid>
     </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="10">
+            <shell:ApplicationBarIconButton x:Name="Reload" Click="Reload_Click" IconUri="/Icons/reload.png" Text="Reload"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

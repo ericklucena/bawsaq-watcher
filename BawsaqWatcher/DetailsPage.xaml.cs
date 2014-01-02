@@ -25,9 +25,11 @@ namespace BawsaqWatcher
             InitializeComponent();
             
         }
+        
+        
 
         // When page is navigated to set data context to selected item in list
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        async protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             string selectedIndex = "";
             string platform;

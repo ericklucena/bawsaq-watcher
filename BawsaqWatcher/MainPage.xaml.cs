@@ -12,6 +12,12 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Newtonsoft.Json;
 
+using System.Text;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Windows.Navigation;
+using Microsoft.Phone.Tasks;
+
 namespace BawsaqWatcher
 {
     public partial class MainPage : PhoneApplicationPage
@@ -74,6 +80,7 @@ namespace BawsaqWatcher
             try
             {
                 string jsonInput = e.Result;
+                saveOnFile(jsonInput, "ps3.json");
                 var rootObject = JsonConvert.DeserializeObject<RootObject>(jsonInput);
                 var stocks = rootObject.Stocks;
 
@@ -85,8 +92,20 @@ namespace BawsaqWatcher
             {
                 if (!error)
                 {
-                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then reopen the app.", "WASTED!", MessageBoxButton.OK);
+                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then hit the reload button.", "WASTED!", MessageBoxButton.OK);
                     error = true;
+
+                    try
+                    {
+                        loadOfflineStocks();
+                        MessageBox.Show("You are viewing the last loaded version of the stocks. Check your internet connection and then hit the reload button.");
+                    }
+                    catch (Exception ex2)
+                    {
+                        MessageBox.Show("There's no cached information of the BAWSAQ stocks. Please, check your internet connection and then hit the reload button.", "BUSTED!", MessageBoxButton.OK);
+                    }
+
+                    
                 }
             }
         }
@@ -96,6 +115,7 @@ namespace BawsaqWatcher
             try
             {
                 string jsonInput = e.Result;
+                saveOnFile(jsonInput, "xbox.json");
                 var rootObject = JsonConvert.DeserializeObject<RootObject>(jsonInput);
                 var stocks = rootObject.Stocks;
 
@@ -107,12 +127,58 @@ namespace BawsaqWatcher
             {
                 if (!error)
                 {
-                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then reopen the app.", "WASTED!", MessageBoxButton.OK);
+                    MessageBox.Show("No internet connection. Please verify your phone's connectivity and then hit the reload button.", "WASTED!", MessageBoxButton.OK);
                     error = true;
+
+                    try
+                    {
+                        loadOfflineStocks();
+                        MessageBox.Show("You are viewing the last loaded version of the stocks. Check your internet connection and then hit the reload button.");
+                    }
+                    catch (Exception ex2)
+                    {
+                        MessageBox.Show("There's no cached information of the BAWSAQ stocks. Please, check your internet connection and then hit the reload button.", "BUSTED!", MessageBoxButton.OK);
+                    }
                 }
             }
-            
-            
+        }
+
+        public void loadOfflineStocks()
+        {
+            var rootObject = JsonConvert.DeserializeObject<RootObject>(readFromFile("ps3.json"));
+            var stocks = rootObject.Stocks;
+            StockRepository.getInstance().setStocksPs3(stocks);
+            ps3Stocks.ItemsSource = StockRepository.getInstance().StocksPs3;
+
+            rootObject = JsonConvert.DeserializeObject<RootObject>(readFromFile("xbox.json"));
+            stocks = rootObject.Stocks;
+            StockRepository.getInstance().setStocksXbox(stocks);
+            xboxStocks.ItemsSource = StockRepository.getInstance().StocksXbox;
+        }
+
+        public void saveOnFile(string data, string filename)
+        {
+            IsolatedStorageFile myFile = IsolatedStorageFile.GetUserStoreForApplication();
+            StreamWriter sw = new StreamWriter(new IsolatedStorageFileStream(filename, FileMode.Create, myFile));
+            sw.WriteLine(data); //Wrting to the file
+            sw.Close();
+
+        }
+
+        public string readFromFile(string filename)
+        {
+            IsolatedStorageFile myFile = IsolatedStorageFile.GetUserStoreForApplication();
+            try
+            {
+
+                StreamReader reader = new StreamReader(new IsolatedStorageFileStream(filename, FileMode.Open, myFile));
+                string rawData = reader.ReadToEnd();
+                reader.Close();
+                return rawData;
+            }
+            catch { }
+
+            return "";
         }
 
         // Load data for the ViewModel Items
@@ -123,5 +189,30 @@ namespace BawsaqWatcher
                 App.ViewModel.LoadData();
             }
         }
+
+        private void Reload_Click(object sender, EventArgs e)
+        {
+            error = false;
+            loadStocks();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            var askforReview = (bool)IsolatedStorageSettings.ApplicationSettings["askforreview"];
+            if (askforReview)
+            {
+                //make sure we only ask once! 
+                IsolatedStorageSettings.ApplicationSettings["askforreview"] = false;
+                var returnvalue = MessageBox.Show("Thank you for using BAWSAQ Watcher for a while now, would you like to review this app?", "Please review my app", MessageBoxButton.OKCancel);
+                if (returnvalue == MessageBoxResult.OK)
+                {
+                    var marketplaceReviewTask = new MarketplaceReviewTask();
+                    marketplaceReviewTask.Show();
+                }
+            }
+        }
+
     }
 }
