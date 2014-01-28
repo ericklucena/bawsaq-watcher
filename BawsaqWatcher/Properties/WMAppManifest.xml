@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
-  <DefaultLanguage xmlns="" code="" />
+  <DefaultLanguage xmlns="" code="en" />
   <App xmlns="" ProductID="{fa025c74-d57d-4bd1-9c03-637fa6cf5897}" Title="BAWSAQ Watcher Lite" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Erick Lucena" Description="" Publisher="Erick Lucena" BitsPerPixel="16" PublisherID="{423ed34a-b99f-4ec4-9b3e-b8dd9382d525}">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
