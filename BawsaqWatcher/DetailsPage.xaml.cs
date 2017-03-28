@@ -13,7 +13,8 @@ using System.Windows.Shapes;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Newtonsoft.Json;
-using System.Windows.Controls.DataVisualization.Charting;
+using Telerik.Windows.Controls;
+using Telerik.Charting;
 
 namespace BawsaqWatcher
 {
@@ -24,9 +25,7 @@ namespace BawsaqWatcher
         {
             InitializeComponent();
             
-        }
-        
-        
+        } 
 
         // When page is navigated to set data context to selected item in list
         async protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -49,7 +48,8 @@ namespace BawsaqWatcher
                 StockLogo.Source = imgSource;    
 
                 StockHistory h = s.getHistory();
-                ((LineSeries)myChart.Series[0]).ItemsSource = h;
+                AreaSeries series = (AreaSeries) this.chart.Series[0];
+                series.ItemsSource = h;
 
                 if (s.PriceMovementDirection.Equals("down"))
                 {

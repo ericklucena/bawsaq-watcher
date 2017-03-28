@@ -2,7 +2,7 @@
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en" />
   <App xmlns="" ProductID="{fa025c74-d57d-4bd1-9c03-637fa6cf5897}" Title="BAWSAQ Watcher" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Erick Lucena" Description="" Publisher="Erick Lucena" BitsPerPixel="16" PublisherID="{423ed34a-b99f-4ec4-9b3e-b8dd9382d525}">
-    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
     </Capabilities>
@@ -11,21 +11,25 @@
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="BawsaqWatcherToken" TaskName="_default">
-        <TemplateFlip>
-          <SmallImageURI IsResource="false" IsRelative="true">Background.png</SmallImageURI>
+        <TemplateIconic>
+          <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\IconicTileSmall.png</SmallImageURI>
           <Count>0</Count>
-          <BackgroundImageURI IsResource="false" IsRelative="true">Background.png</BackgroundImageURI>
+          <IconImageURI IsRelative="true" IsResource="false">Assets\Tiles\IconicTileMediumLarge.png</IconImageURI>
           <Title>BAWSAQ Watcher</Title>
-          <BackContent>
-          </BackContent>
-          <BackBackgroundImageURI>
-          </BackBackgroundImageURI>
-          <BackTitle>
-          </BackTitle>
-          <DeviceLockImageURI>
-          </DeviceLockImageURI>
+          <Message>
+          </Message>
+          <BackgroundColor>
+          </BackgroundColor>
           <HasLarge>false</HasLarge>
-        </TemplateFlip>
+          <LargeContent1>
+          </LargeContent1>
+          <LargeContent2>
+          </LargeContent2>
+          <LargeContent3>
+          </LargeContent3>
+          <DeviceLockImageURI IsRelative="true" IsResource="false">
+          </DeviceLockImageURI>
+        </TemplateIconic>
       </PrimaryToken>
     </Tokens>
     <ScreenResolutions>

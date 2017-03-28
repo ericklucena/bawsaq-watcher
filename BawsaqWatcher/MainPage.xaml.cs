@@ -214,5 +214,10 @@ namespace BawsaqWatcher
             }
         }
 
+        private void AppBarAbout_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/About.xaml", UriKind.Relative));
+        }
+
     }
 }

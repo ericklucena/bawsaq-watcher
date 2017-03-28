@@ -50,24 +50,34 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
         <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="/background_bawsaq_striped.png"/>
+            <SolidColorBrush Color="White"/>
         </Grid.Background>
-        <!--Pivot Control-->
-        <controls:Panorama FontSize="10" Grid.Row="0">
-            <controls:Panorama.Title>
-                <Grid Margin="0, 50, 0, 0">
-                    <Image Source="/baws_logo.png" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Left" Width="400" Height="80" />
-                </Grid>
 
-            </controls:Panorama.Title>
+        <Grid x:Name="TitlePanel" Grid.Row="0" Grid.Column="0" Height="100" >
+            <Grid.Background>
+                <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Border HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Height="80" Margin="5,0,0,0">
+                <Image Source="/baws_logo.png" Stretch="Uniform"/>
+            </Border>
+        </Grid>
+        <!--Pivot Control-->
+        <controls:Panorama FontSize="10" Grid.Row="1">
+
             <!--Pivot item one-->
-            <controls:PanoramaItem Header="PS3" Foreground="White">
+            <controls:PanoramaItem Header="PS3" Foreground="{StaticResource PhoneAccentBrush}">
                 <!--Double line list with text wrapping-->
-                <ListBox x:Name="ps3Stocks" Margin="0,-25,0,0" ItemsSource="{Binding Items}" SelectionChanged="ps3Stocks_SelectionChanged">
+                <ListBox x:Name="ps3Stocks" Margin="0,-10,0,0" ItemsSource="{Binding Items}" SelectionChanged="ps3Stocks_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="StockInformation"  Grid.Column="0" Background="#DD000000"  Width="400" HorizontalAlignment="Center" Margin="0,0,0,10">
@@ -94,9 +104,9 @@
             </controls:PanoramaItem>
 
             <!--Pivot item two-->
-            <controls:PanoramaItem Header="XBOX" Foreground="White">
+            <controls:PanoramaItem Header="XBOX" Foreground="{StaticResource PhoneAccentBrush}">
                 <!--Triple line list no text wrapping-->
-                <ListBox x:Name="xboxStocks" Margin="0,-25,0,0" ItemsSource="{Binding Items}" SelectionChanged="xboxStocks_SelectionChanged">
+                <ListBox x:Name="xboxStocks" Margin="0,-10,0,0" ItemsSource="{Binding Items}" SelectionChanged="xboxStocks_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="StockInformation" Grid.Row="2" Grid.Column="0" Background="#DD000000"  Width="400" HorizontalAlignment="Center" Margin="0,0,0,10">
@@ -123,9 +133,13 @@
             </controls:PanoramaItem>
         </controls:Panorama>
     </Grid>
+    
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="1">
-            <shell:ApplicationBarIconButton x:Name="Reload" Click="Reload_Click" IconUri="/Icons/reload.png" Text="Reload"/>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.9" Mode="Minimized" ForegroundColor="White" BackgroundColor="Black">
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Reload" Click="Reload_Click"/>
+                <shell:ApplicationBarMenuItem Text="About" Click="AppBarAbout_Click"/>
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
